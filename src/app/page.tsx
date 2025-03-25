@@ -5,7 +5,7 @@ import perfil_image from '@/assets/images/fone.png';
 import trilha_image from '@/assets/images/mato5.png';
 import praia_image from '@/assets/images/praia2.png';
 import pelada_image from '@/assets/images/pelada.png';
-import Link from 'next/link';
+import Link from 'next/link';;
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { checkUser } from './(auth)/login/loginActions';
@@ -60,9 +60,9 @@ export default function SubscriptionLanding() {
               FAQ
             </a>
           </div>
-          <button className="bg-pink-500 cursor-pointer hover:bg-pink-600 px-4 py-2 rounded-full font-medium transition">
+          <Link href={'/login'} className="bg-pink-500 cursor-pointer hover:bg-pink-600 px-4 py-2 rounded-full font-medium transition">
             Entrar
-          </button>
+          </Link>
         </nav>
 
         {/* Hero Content */}
@@ -81,7 +81,7 @@ export default function SubscriptionLanding() {
             Entrar Gratuitamente
           </Link>
 
-          <div className="mt-10 flex justify-center space-x-4">
+          <div className="mt-10 flex md:flex-row gap-4 md:gap-1 items-center flex-col justify-center space-x-4">
           <div className="flex items-center">
               <svg
                 className="w-5 h-5 text-pink-400 mr-2"
@@ -333,9 +333,9 @@ export default function SubscriptionLanding() {
                     <span>Atualizações semanais</span>
                   </li>
                 </ul>
-                <button className="w-full cursor-pointer bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                <Link href='/login' className="w-full cursor-pointer bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition">
                   Assinar Agora
-                </button>
+                </Link>
               </div>
             </div>
             <div className="bg-gradient-to-b from-purple-900 to-purple-800 rounded-xl shadow-xl overflow-hidden transform transition hover:scale-105">
