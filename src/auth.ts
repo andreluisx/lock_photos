@@ -3,13 +3,19 @@ import Credentials from 'next-auth/providers/credentials';
 import findUserByCredentials from './app/(auth)/login/findUserByCredentials';
 import { LoginUserType } from './types/auth';
 
-type UserType = {
-  id: number;
+// Define the type for login credentials
+interface LoginCredentials {
   email: string;
-  fullName: string | null;
-  birthdate: string;
-  isPremium: boolean;
-  terms: boolean;
+  password: string;
+  rememberMe?: boolean;
+}
+
+// Your existing types
+type UserType = {
+  id: string;
+  name?: string;
+  email: string;
+  // other user properties
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -19,23 +25,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      authorize: async ({
-        email,
-        password,
-      }: LoginUserType): Promise<UserType | null> => {
+      authorize: async (
+        credentials: Partial<LoginCredentials>
+      ): Promise<UserType | null> => {
+        const { email, password } = credentials as LoginCredentials;
+
+        if (!email || !password) {
+          return null;
+        }
+
         const user = await findUserByCredentials(email, password);
 
-        if(!user){
-          return null
+        if (!user) {
+          return null;
         }
 
         return {
           id: user.id,
           email: user.email,
-          fullName: user.fullName, // Certifique-se de que isso está vindo corretamente
-          birthdate: user.birthdate,
-          isPremium: user.isPremium,
-          terms: user.terms
         };
       },
     }),

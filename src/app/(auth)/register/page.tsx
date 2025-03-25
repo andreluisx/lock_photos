@@ -19,18 +19,18 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
-  useEffect(()=>{
-    const ative = async ()=>{
-      const response = await checkUser()
-      if(response?.user){
+  useEffect(() => {
+    const ative = async () => {
+      const response = await checkUser();
+      if (response?.user) {
         router.push('/feed');
       }
-    }
-    ative()
-  },[router])
+    };
+    ative();
+  }, [router]);
 
   // Função para verificar se o usuário tem pelo menos 18 anos
-  const checkAge = (dateString) => {
+  const checkAge = (dateString: string): boolean => {
     const today = new Date();
     const birthDate = new Date(dateString);
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -49,19 +49,19 @@ export default function Register() {
     fullName: Yup.string()
       .required('Nome completo é obrigatório')
       .test('two-words', 'Insira pelo menos 2 palavras', (value) => {
-        return value.split(' ').filter((word) => word.length > 0).length >= 2;
+        return value?.split(' ').filter((word) => word.length > 0).length >= 2;
       }),
     email: Yup.string().email('Email inválido').required('Email é obrigatório'),
     birthdate: Yup.date()
       .required('Data de nascimento é obrigatória')
       .test('age', 'Você precisa ter pelo menos 18 anos', (value) =>
-        checkAge(value)
+        checkAge(value?.toISOString().split('T')[0] || '')
       ),
     password: Yup.string()
       .min(6, 'A senha deve ter no mínimo 6 caracteres')
       .required('Senha é obrigatória'),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais')
+      .oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
       .required('Confirme sua senha'),
     terms: Yup.boolean().oneOf(
       [true],
@@ -98,7 +98,7 @@ export default function Register() {
   });
 
   // Calcular a data máxima para o date picker (hoje - 18 anos)
-  const getMaxDate = () => {
+  const getMaxDate = (): string => {
     const today = new Date();
     today.setFullYear(today.getFullYear() - 18);
     return today.toISOString().split('T')[0];
@@ -194,7 +194,11 @@ export default function Register() {
                       type="date"
                       name="birthdate"
                       max={getMaxDate()}
-                      className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border border-gray-600 focus:ring-pink-500 appearance-none"
+                      className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 bg-gray-700 text-white border ${
+                        formik.errors.birthdate && formik.touched.birthdate
+                          ? 'border-red-500 focus:ring-red-500'
+                          : 'border-gray-600 focus:ring-pink-500'
+                      }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.birthdate}

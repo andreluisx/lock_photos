@@ -9,7 +9,7 @@ type photoType = {
 };
 
 export interface PostProps {
-  id: number,
+  id?: number,
   photo: photoType;
   description: string;
   likes: number | 0;

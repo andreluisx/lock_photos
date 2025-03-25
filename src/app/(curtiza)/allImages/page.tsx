@@ -38,7 +38,7 @@ export default function Feed() {
           {filteredPosts.map((post) => (
             <AllPosts
               key={post.id}
-              photo={{ path: post.photo.path, forPremium: post.photo.forPremium }}
+              photo={{ path: post?.photo?.path, categories: post?.photo?.categories, forPremium: post?.photo?.forPremium }}
               isPremium={false}
             />
           ))}

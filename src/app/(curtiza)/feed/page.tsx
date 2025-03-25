@@ -14,10 +14,7 @@ export default function Feed() {
                 description={post.description}
                 likes={post.likes}
                 date={post.date}
-                photo={{
-                  path: post.photo.path,
-                  forPremium: post.photo.forPremium,
-                }}
+                photo={{ path: post?.photo?.path, categories: post?.photo?.categories, forPremium: post?.photo?.forPremium }}
               />
             );
           })}

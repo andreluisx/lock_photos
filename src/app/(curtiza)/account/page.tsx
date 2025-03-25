@@ -1,13 +1,14 @@
 "use client"
 import DataAccount from '@/components/DataAccount';
 import React, { useState } from 'react';
+type TabType = 'meus-dados' | 'minha-assinatura' | 'deletar-conta';
 
 export default function Account() {
-  const [activeTab, setActiveTab] = useState('meus-dados');
+  const [activeTab, setActiveTab] = useState<TabType>('meus-dados');
   const [isPremium, setIsPremium] = useState(true);
 
   // Funções para mudar de tab
-  const handleTabChange = (tab) => {
+  const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
   };
 

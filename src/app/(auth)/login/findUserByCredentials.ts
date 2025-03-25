@@ -16,7 +16,7 @@ type UserType = {
 export default async function findUserByCredentials(
   email: string,
   password: string
-): Promise<UserType | null> {
+): Promise<any | null> {
   
   const user = await db.user.findFirst({
     where: { email },

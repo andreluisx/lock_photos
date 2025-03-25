@@ -1,18 +1,16 @@
-'use client'
+'use client';
 import { useState } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { posts } from '@/datas/posts';
 
 interface ImageViewerProps {
-  initialIndex: number;
-  onClose: () => void;
   isPremiums: boolean;
 }
 
-export default function ImageViewer({ initialIndex, isPremiums }: ImageViewerProps) {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const isPremium = false;
+export default function ImageViewer({ isPremiums }: ImageViewerProps) {
+  const [currentIndex, setCurrentIndex] = useState(1);  // Corrigido para usar o `initialIndex`
+  const isPremium = isPremiums;  // Corrigido para usar a prop `isPremiums`
 
   const images = posts.map(post => post.photo.path);
 
@@ -24,12 +22,12 @@ export default function ImageViewer({ initialIndex, isPremiums }: ImageViewerPro
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const onClose = ()=> {
+  const onClose = () => {
     window.history.back();
-  }
+  };
 
   const renderPhoto = () => {
-    if(isPremium === false && posts[currentIndex].photo.forPremium === true){
+    if (isPremium === false && posts[currentIndex].photo.forPremium === true) {
       return (
         <div className="relative rounded-md overflow-hidden mt-4">
           <a className="cursor-pointer inset-1 px-1 gap-2 flex flex-col justify-center items-center border-none absolute z-40 rounded-t-md">
@@ -46,14 +44,14 @@ export default function ImageViewer({ initialIndex, isPremiums }: ImageViewerPro
     }
     return (
       <Image
-          src={posts[currentIndex]?.photo?.path}
-          alt="Imagem em destaque"
-          width={800}
-          height={600}
-          className="rounded-md object-contain"
-        />
-    )
-  }
+        src={posts[currentIndex]?.photo?.path}
+        alt="Imagem em destaque"
+        width={800}
+        height={600}
+        className="rounded-md object-contain"
+      />
+    );
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
@@ -66,7 +64,6 @@ export default function ImageViewer({ initialIndex, isPremiums }: ImageViewerPro
       </button>
 
       <div className="p-4 bg-gray-900 rounded-lg">
-
         {renderPhoto()}
       </div>
 
