@@ -34,7 +34,7 @@ export default function Post({
   };
 
   const renderPhoto = () => {
-    if (photo?.forPremium === true && isPremium === false) {
+    if (photo?.forPremium === true && !isPremium) {
       return (
         <div className="relative">
           <a className="cursor-pointer inset-1 gap-2 flex flex-col justify-center items-center border-none absolute z-40 rounded-t-md">

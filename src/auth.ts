@@ -1,9 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import findUserByCredentials from './app/(auth)/login/findUserByCredentials';
-import { LoginUserType } from './types/auth';
 
-// Define the type for login credentials
 interface LoginCredentials {
   email: string;
   password: string;
@@ -13,10 +11,21 @@ interface LoginCredentials {
 // Your existing types
 type UserType = {
   id: string;
-  name?: string;
+  fullName?: string;
+  isPremium?:boolean;
   email: string;
   // other user properties
 };
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      fullName: string;
+      isPremium: boolean;
+    };
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -43,10 +52,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return {
           id: user.id,
           email: user.email,
+          fullName: user.fullName, // Adicione essas propriedades
+          isPremium: user.isPremium, // Adicione essas propriedades
         };
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
+      
+      // Adicione essas linhas para incluir fullName e isPremium na sessão
+      session.user.fullName = token.fullName as string;
+      session.user.isPremium = token.isPremium as boolean;
+      
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.fullName = (user as UserType).fullName;
+        token.isPremium = (user as UserType).isPremium;
+      }
+      return token;
+    },
+  },
   trustHost: true,
-  // Add any additional configuration if needed
 });

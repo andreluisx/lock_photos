@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const UserPage = pathname === "/login" || pathname === "/register" || pathname === "/";
+  const UserPage = pathname === "/login" || pathname === "/register" || pathname === "/" || pathname === "/admin" || pathname === "/admin/create";
 
   return (
     <html lang="en" className="dark">

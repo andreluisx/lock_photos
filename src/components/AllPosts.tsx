@@ -1,4 +1,5 @@
 import Image, { StaticImageData } from 'next/image';
+import { useRouter } from 'next/navigation';
 
 type photoType = {
   path: StaticImageData;
@@ -7,12 +8,20 @@ type photoType = {
 };
 
 interface AllPostsProps {
+  id: number;
   photo: photoType;
   isPremium: boolean;
 }
 
-export default function AllPosts({ photo, isPremium }: AllPostsProps) {
-  if(isPremium === false && photo?.forPremium === true){
+
+export default function AllPosts({ id, photo, isPremium }: AllPostsProps) {
+  const router = useRouter();
+
+  const openImage = () => {
+    router.push(`/${id}`)
+  }
+
+  if(!isPremium && photo?.forPremium === true){
     return (
       <div className="relative rounded-md mb-4 overflow-hidden">
         <a className="cursor-pointer inset-1  px-1 gap-2 flex flex-col justify-center items-center border-none absolute z-40 rounded-t-md">
@@ -28,13 +37,13 @@ export default function AllPosts({ photo, isPremium }: AllPostsProps) {
     );
   }else{
     return (
-      <div className="overflow-hidden rounded-md mb-4 sm:mt-0 border border-slate-600">
+      <button onClick={openImage} className="overflow-hidden rounded-md mb-4 sm:mt-0 border border-slate-600">
         <Image
           src={photo?.path}
           alt="Descrição da imagem"
           className="w-full h-fit rounded-md cursor-pointer transition-transform duration-300 hover:scale-105"
         />
-      </div>
+      </button>
     );
   } 
 }

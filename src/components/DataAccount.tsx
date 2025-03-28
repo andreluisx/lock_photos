@@ -30,7 +30,7 @@ export default function DataAccount() {
         <input
           type="text"
           className="w-full bg-gray-800 border border-slate-600 rounded-md px-4 py-2 text-white"
-          defaultValue="Usuário"
+          defaultValue={user?.fullName}
         />
       </div>
 

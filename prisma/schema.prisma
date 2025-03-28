@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -14,21 +8,37 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// generator client {
-//   provider = "prisma-client-js"
-// }
-
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
 model user {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
   fullName  String?
-  password String 
+  password  String
   birthdate String
   isPremium Boolean @default(false)
-  terms Boolean
+  terms     Boolean
+}
+
+model Post {
+  id          Int            @id @default(autoincrement())
+  photoPath   String
+  forPremium  Boolean
+  description String
+  likes       Int            @default(0)
+  createdAt   DateTime       @default(now())
+  categories  PostCategory[]
+}
+
+model Category {
+  id    Int            @id @default(autoincrement())
+  name  String         @unique
+  posts PostCategory[]
+}
+
+model PostCategory {
+  postId     Int
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([postId, categoryId])
 }
